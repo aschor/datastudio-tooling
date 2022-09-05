@@ -12,6 +12,7 @@ Tooling for [Data Studio Developer Features]
 1. git clone this repository
 ```
 git clone https://github.com/aschor/datastudio-tooling.git
+git checkout fix_to_work
 cd datastudio-tooling
 export TOOLING=$PWD
 ```

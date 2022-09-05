@@ -37,7 +37,8 @@ const deploy = async (args: VizArgs): Promise<void> => {
   const buildValues = util.validateBuildValues(args);
   await execa(
     'gsutil',
-    ['cp', '-a', 'public-read', 'build/*', buildValues.gcsBucket],
+    // ['cp', '-a', 'public-read', 'build/*', buildValues.gcsBucket],
+    ['cp', 'build/*', buildValues.gcsBucket],
     pipeStdIO
   );
   console.log(`Viz deployed to: ${buildValues.gcsBucket}`);

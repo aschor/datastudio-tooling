@@ -140,12 +140,12 @@ export const getBuildableComponents = (): ComponentBuildValues[] => {
   }
 
   if (parsedJson.dsccViz.hasOwnProperty("gcsDevBucket")) {
-      process.env.gcsDevBucket = parsedJson.dsccViz.gcsDevBucket;
-      console.log(`declared gcsDevBucket env variable with ${process.env.gcsDevBucket} value`)
+      process.env.npm_package_dsccViz_gcsDevBucket = parsedJson.dsccViz.gcsDevBucket;
+      console.log(`declared npm_package_dsccViz_gcsDevBucket env variable with ${process.env.gcsDevBucket} value`)
     }
   if (parsedJson.dsccViz.hasOwnProperty("gcsProdBucket")) {
-      process.env.gcsProdBucket = parsedJson.dsccViz.gcsProdBucket;
-      console.log(`declared gcsProdBucket env variable with ${process.env.gcsProdBucket} value`)
+      process.env.npm_package_dsccViz_gcsProdBucket = parsedJson.dsccViz.gcsProdBucket;
+      console.log(`declared npm_package_dsccViz_gcsProdBucket env variable with ${process.env.gcsProdBucket} value`)
     }
   console.log("number of components found : ");
   if (parsedJson.dsccViz.hasOwnProperty("components")) {
