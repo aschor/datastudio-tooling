@@ -9,7 +9,7 @@
     "lib": ["es6"],
     "strict": true,
     "types": ["node", "jest"],
-    "noUnusedLocals": true,
+    "noUnusedLocals": false,
     "noUnusedParameters": true
   },
   "include": [

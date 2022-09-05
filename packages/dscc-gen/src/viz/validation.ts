@@ -61,6 +61,6 @@ export const hasBucketPermissions = async (
   gcsPath: string
 ): Promise<boolean | string> => {
   const gcsRootBucket = parseBucketName(gcsPath);
-  await execa(`gsutil`, ['acl', 'get', gcsRootBucket]);
+//  await execa(`gsutil`, ['acl', 'get', gcsRootBucket]);
   return true;
 };

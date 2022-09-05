@@ -8,6 +8,41 @@
 
 Tooling for [Data Studio Developer Features]
 
+## USAGE :
+1. git clone this repository
+```
+git clone https://github.com/aschor/datastudio-tooling.git
+cd datastudio-tooling
+export TOOLING=$PWD
+```
+2. build dscc-scripts and link it
+```
+cd dscc-scripts
+yarn
+yarn build
+npm install
+npm link
+```
+3. build dscc-gen and link it
+```
+cd ../dscc-gen
+yarn
+yarn build
+npm install
+npm link @google/dscc-scripts
+npm link
+```
+4. create your vizualisation :
+```
+cd WHEREVER_YOU_STORE_YOUR_DATA
+dscc-gen viz #enter your answers here
+cd $YOUR_VIZ_PROJECT_NAME
+npm install
+rm -rf node_modules/@google/dscc-scripts
+ln -s $TOOLING/packages/dscc-scripts -t node_modules/@google/
+npm run start
+```
+
 ## What's in this repo
 
 [ds-component]:
