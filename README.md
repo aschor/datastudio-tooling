@@ -21,26 +21,28 @@ export TOOLING=$PWD
 cd dscc-scripts
 yarn
 yarn build
-npm install
-npm link
+yarn install
+yarn link
 ```
 3. build dscc-gen and link it
 ```
 cd ../dscc-gen
 yarn
 yarn build
-npm install
-npm link @google/dscc-scripts
-npm link
+yarn install
+yarn link @google/dscc-scripts
+npm link #or npm link ; makes the command globaly available
 ```
 4. create your vizualisation :
 ```
 cd WHEREVER_YOU_STORE_YOUR_DATA
 dscc-gen viz #enter your answers here
 cd $YOUR_VIZ_PROJECT_NAME
-npm install
-rm -rf node_modules/@google/dscc-scripts
-ln -s $TOOLING/packages/dscc-scripts -t node_modules/@google/
+#npm install
+#rm -rf node_modules/@google/dscc-scripts
+#ln -s $TOOLING/packages/dscc-scripts -t node_modules/@google/
+yarn install
+yarn link @google/dscc-scripts
 npm run start
 ```
 
