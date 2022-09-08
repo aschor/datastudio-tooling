@@ -8,6 +8,11 @@
 
 Tooling for [Data Studio Developer Features]
 
+## /!\ WARNING /!\
+* contains a hack to bypass bucket ACL checks, as for now I DON'T have access to any public bucket. And it seems I won't sadly (so won't be able to officialy use those toolings ...)
+* I have not tested all the usage below with the YARN package manager instead of the NPM one. NPM did work, but did break on every single "npm install" or "npm link" command, and it seems (in an already generated viz) that YARN works just fine (yarn install does not break a link already there, and yarn link does not delete packages already there)
+* still use "npm run xxx" for every viz usage, as my fix doesn't work with yarn (I declare global variables based on NPM's injected variables, which are not the same as yarn it seems). 
+
 ## USAGE :
 1. git clone this repository
 ```
@@ -31,7 +36,7 @@ yarn
 yarn build
 yarn install
 yarn link @google/dscc-scripts
-npm link #or npm link ; makes the command globaly available
+yarn link #or npm link ; makes the command globaly available
 ```
 4. create your vizualisation :
 ```
