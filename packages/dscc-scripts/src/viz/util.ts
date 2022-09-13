@@ -124,49 +124,57 @@ export const validateConfigFile = (path: PathLike): boolean => {
 export const getBuildableComponents = (): ComponentBuildValues[] => {
   const components: ComponentBuildValues[] = [];
 
-  // console.log(process.env);
-  const path=process.env['npm_config_local_prefix']+'/package.json';
-  const fileExists = existsSync(path);
-  if (!fileExists) {
-      throw new Error(`The file: \n${path}\n was not found.`);
-  }
-  const fileContents = readFileSync(path, 'utf8');
-  let parsedJson;
-  try {
-      parsedJson = JSON.parse(fileContents);
-  }
-  catch (e) {
-      throw new Error(`The file:\n ${path}\n could not be parsed as JSON. `);
-  }
+  //as per https://github.com/npm/rfcs/blob/main/implemented/0021-reduce-lifecycle-script-environment.md
+  let npm_path = process.env['npm_execpath']===undefined ? 'npm-cli.js' : process.env['npm_execpath'];
+  if (npm_path.split(/[\\/]/).reverse()[0] === 'npm-cli.js') {
+    console.log('using npm as execution engine')
 
-  if (parsedJson.dsccViz.hasOwnProperty("gcsDevBucket")) {
-      process.env.npm_package_dsccViz_gcsDevBucket = parsedJson.dsccViz.gcsDevBucket;
-      console.log(`declared npm_package_dsccViz_gcsDevBucket env variable with ${process.env.gcsDevBucket} value`)
+    const path=''+process.env['npm_package_json'];
+    const fileExists = existsSync(path);
+    if (!fileExists) {
+        throw new Error(`The file: \n${path}\n was not found.`);
     }
-  if (parsedJson.dsccViz.hasOwnProperty("gcsProdBucket")) {
-      process.env.npm_package_dsccViz_gcsProdBucket = parsedJson.dsccViz.gcsProdBucket;
-      console.log(`declared npm_package_dsccViz_gcsProdBucket env variable with ${process.env.gcsProdBucket} value`)
+    const fileContents = readFileSync(path, 'utf8');
+    let parsedJson;
+    try {
+        parsedJson = JSON.parse(fileContents);
     }
-  console.log("number of components found : ");
-  if (parsedJson.dsccViz.hasOwnProperty("components")) {
-      console.log(parsedJson.dsccViz.components.length);
-      for (let idx = 0; idx < parsedJson.dsccViz.components.length ; idx++) {
-          let comp=parsedJson.dsccViz.components[idx];
-          var myList = ["jsonFile", "jsFile", "cssFile"];
-          for (var i = 0, len = myList.length; i < len; i++) {
-              let elem=myList[i];
-              console.log(`checking presence of ${elem} key in component ${idx}`);
-              if (comp.hasOwnProperty(elem)) { 
-                  process.env[`npm_package_dsccViz_components_${idx}_${elem}`]=parsedJson.dsccViz.components[idx][elem];
-                  console.log(`declared variable npm_package_dsccViz_components_${idx}_${elem} with value `+process.env[`npm_package_dsccViz_components_${idx}_${elem}`]);
-              }
-          }            
+    catch (e) {
+        throw new Error(`The file:\n ${path}\n could not be parsed as JSON. `);
+    }
+
+    if (parsedJson.dsccViz.hasOwnProperty("gcsDevBucket")) {
+        process.env.npm_package_dsccViz_gcsDevBucket = parsedJson.dsccViz.gcsDevBucket;
+        console.log(`declared npm_package_dsccViz_gcsDevBucket env variable with ${process.env.gcsDevBucket} value`)
       }
+    if (parsedJson.dsccViz.hasOwnProperty("gcsProdBucket")) {
+        process.env.npm_package_dsccViz_gcsProdBucket = parsedJson.dsccViz.gcsProdBucket;
+        console.log(`declared npm_package_dsccViz_gcsProdBucket env variable with ${process.env.gcsProdBucket} value`)
+      }
+    console.log("number of components found : ");
+    if (parsedJson.dsccViz.hasOwnProperty("components")) {
+        console.log(parsedJson.dsccViz.components.length);
+        for (let idx = 0; idx < parsedJson.dsccViz.components.length ; idx++) {
+            let comp=parsedJson.dsccViz.components[idx];
+            var myList = ["jsonFile", "jsFile", "cssFile"];
+            for (var i = 0, len = myList.length; i < len; i++) {
+                let elem=myList[i];
+                console.log(`checking presence of ${elem} key in component ${idx}`);
+                if (comp.hasOwnProperty(elem)) { 
+                    process.env[`npm_package_dsccViz_components_${idx}_${elem}`]=parsedJson.dsccViz.components[idx][elem];
+                    console.log(`declared variable npm_package_dsccViz_components_${idx}_${elem} with value `+process.env[`npm_package_dsccViz_components_${idx}_${elem}`]);
+                }
+            }            
+        }
+    }
+    else {
+        console.log(0);
+    }
+
   }
   else {
-      console.log(0);
+    console.log('not using npm as execution engine. yarn still works as expected by this script')
   }
-
 
   const lastComponentIdx = Object.keys(process.env)
     .filter((key) => key.startsWith('npm_package_dsccViz_components_'))

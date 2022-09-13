@@ -9,17 +9,18 @@
 Tooling for [Data Studio Developer Features]
 
 ## /!\ WARNING /!\
+* you NEED to install YARN before using this.
 * contains a hack to bypass bucket ACL checks, as for now I DON'T have access to any public bucket. And it seems I won't sadly (so won't be able to officialy use those toolings ...)
-* I have not tested all the usage below with the YARN package manager instead of the NPM one. NPM did work, but did break on every single "npm install" or "npm link" command, and it seems (in an already generated viz) that YARN works just fine (yarn install does not break a link already there, and yarn link does not delete packages already there)
-* still use "npm run xxx" for every viz usage, as my fix doesn't work with yarn (I declare global variables based on NPM's injected variables, which are not the same as yarn it seems). 
+* I have tested all the usage below with the YARN package manager instead of the NPM one. NPM did work if manually linking the modified package, but did break on every single "npm install" or "npm link" command, and it seems that YARN works just fine (yarn install does not break a link already there, and yarn link does not delete packages already there). 
+* ~~still use "npm run xxx" for every viz usage, as my fix doesn't work with yarn (I declare global variables based on NPM's injected variables, which are not the same as yarn it seems).~~
 
 ## USAGE :
 1. git clone this repository
 ```
 git clone https://github.com/aschor/datastudio-tooling.git
 git checkout fix_to_work
-cd datastudio-tooling
-export TOOLING=$PWD
+#cd datastudio-tooling  #not needed anymore
+#export TOOLING=$PWD    #not needed anymore
 ```
 2. build dscc-scripts and link it
 ```
@@ -36,7 +37,7 @@ yarn
 yarn build
 yarn install
 yarn link @google/dscc-scripts
-yarn link #or npm link ; makes the command globaly available
+yarn link #makes the command globaly available
 ```
 4. create your vizualisation :
 ```
@@ -46,9 +47,10 @@ cd $YOUR_VIZ_PROJECT_NAME
 #npm install
 #rm -rf node_modules/@google/dscc-scripts
 #ln -s $TOOLING/packages/dscc-scripts -t node_modules/@google/
-yarn install
+#yarn install
 yarn link @google/dscc-scripts
-npm run start
+yarn run start  #or :
+#yarn run update_message
 ```
 
 ## What's in this repo
